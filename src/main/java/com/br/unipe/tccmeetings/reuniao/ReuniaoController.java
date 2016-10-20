@@ -1,21 +1,17 @@
 package com.br.unipe.tccmeetings.reuniao;
 
 import com.br.unipe.tccmeetings.utils.GenericService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.br.unipe.tccmeetings.utils.ServicePath;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.br.unipe.tccmeetings.utils.ServicePath;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by jezreel on 11/10/16.
  */
-@Controller
+@RestController
 @RequestMapping(value = ServicePath.REUNIAO_PATH)
 public class ReuniaoController extends GenericService<ReuniaoEntity,Long> {
-
-    @Autowired
-    private ReuniaoRepository reuniaoRepository;
-
 
 
 }

@@ -38,17 +38,12 @@ public class UserEntity extends BaseEntity<Long> {
 	@NotNull
 	@Size(min = 80, max = 80)
 	@Column(name = "password", length = 80, nullable = false)
-	@JsonIgnore
 	@JsonProperty("password")
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_permission", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "permission_id") )
 	private List<PermissionEntity> permissions;
-
-	@Null
-	@OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	private List<ReuniaoEntity> reunioes;
 
 	public UserEntity() {
 	}

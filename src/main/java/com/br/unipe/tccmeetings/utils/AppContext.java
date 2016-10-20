@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableAutoConfiguration
 @EnableTransactionManagement
-@ComponentScan( basePackages = "org.wpattern.mutrack.simple")
-@EnableJpaRepositories(basePackages = "org.wpattern.mutrack.simple")
-@EntityScan(basePackages = "org.wpattern.mutrack.simple")
+@ComponentScan( basePackages = "com.br.unipe.tccmeetings")
+@EnableJpaRepositories(basePackages = "com.br.unipe.tccmeetings")
+@EntityScan(basePackages = "com.br.unipe.tccmeetings")
 public class AppContext extends SpringBootServletInitializer{
 
 	@Bean(name = "applicationProperty")

@@ -26,11 +26,11 @@ public final class ServicePath {
 
 	public static final String CURSO_PATH = PRIVATE_ROOT_PATH + "/curso";
 
-	public static final String REUNIAO_PATH = PRIVATE_ROOT_PATH + "/reuniao";
-
 	public static final String DOCENTE_PATH = PRIVATE_ROOT_PATH + "/docente";
 
 	public static final String DISCENTE_PATH = PRIVATE_ROOT_PATH + "/discente";
+
+	public static final String REUNIAO_PATH = PRIVATE_ROOT_PATH + "/reuniao";
 
 	///////////////////////////////////////////////////////////////
 	// PUBLIC PATHS

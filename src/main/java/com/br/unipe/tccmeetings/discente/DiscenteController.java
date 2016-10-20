@@ -40,7 +40,6 @@ public class DiscenteController extends GenericService<DiscenteEntity,Long>{
         }
         List<PermissionEntity> permissoes = permissionRepository.findPermissionByDiscente();
         user.setPermissions(permissoes);
-
         return this.discenteRepository.save(user);
     }
 

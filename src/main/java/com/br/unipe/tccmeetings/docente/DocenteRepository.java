@@ -15,4 +15,6 @@ public interface DocenteRepository extends JpaRepository<DocenteEntity,Long> {
     List<DocenteEntity> findByNome(@Param("content") String content);
 
     DocenteEntity findById(Long id);
+
+    DocenteEntity findByEmail(String email);
 }

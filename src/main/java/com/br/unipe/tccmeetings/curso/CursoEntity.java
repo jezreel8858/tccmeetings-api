@@ -32,8 +32,8 @@ public class CursoEntity extends BaseEntity<Long>{
     private List<DiscenteEntity> discentes;
 
     @NotNull
-    @ManyToMany( cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
-    @JoinTable(name = "td_curso_disciplina",joinColumns = @JoinColumn(name = "id_curso"),inverseJoinColumns = @JoinColumn(name = "id_disciplina"))
+    @ManyToMany( cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_curso_disciplina",joinColumns = @JoinColumn(name = "id_curso"),inverseJoinColumns = @JoinColumn(name = "id_disciplina"))
     private List<DisciplinaEntity> disciplinas;
 
 }

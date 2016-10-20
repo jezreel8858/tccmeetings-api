@@ -1,5 +1,7 @@
 package com.br.unipe.tccmeetings.reuniao;
 
+import com.br.unipe.tccmeetings.discente.DiscenteEntity;
+import com.br.unipe.tccmeetings.docente.DocenteEntity;
 import com.br.unipe.tccmeetings.user.UserEntity;
 import com.br.unipe.tccmeetings.utils.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,8 +32,8 @@ public class ReuniaoEntity extends BaseEntity<Long> {
     @Column(name = "dataInicial", nullable = false)
     private Date dataInicial;
 
-    @NotNull
-    @Column(name = "dataFinal", nullable = false)
+    @Null
+    @Column(name = "dataFinal", nullable = true)
     private Date dataFinal;
 
     @Null
@@ -39,9 +41,13 @@ public class ReuniaoEntity extends BaseEntity<Long> {
     private boolean validado;
 
     @NotNull
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_user")
-    private UserEntity userEntity;
+    @ManyToOne
+    @JoinColumn(name = "id_docente")
+    private DocenteEntity id_docente;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_discente")
+    private DiscenteEntity id_discente;
 
 }
