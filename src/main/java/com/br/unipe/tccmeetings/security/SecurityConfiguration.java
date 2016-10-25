@@ -9,6 +9,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.br.unipe.tccmeetings.exception.ExceptionConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.annotation.Order;
@@ -69,43 +70,42 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // Public (permit all).
                 .antMatchers(ServicePath.PUBLIC_ROOT_PATH + ServicePath.ALL).permitAll()
         		// Admin Authorities.
-                .antMatchers(HttpMethod.GET, ServicePath.USER_PATH).permitAll()
-                .antMatchers(HttpMethod.POST, ServicePath.USER_PATH).permitAll()
-                .antMatchers(HttpMethod.PUT, ServicePath.USER_PATH).permitAll()
-                .antMatchers(HttpMethod.DELETE, ServicePath.USER_PATH).permitAll()
+                .antMatchers(HttpMethod.GET, ServicePath.USER_PATH).hasAnyAuthority(AUTH_ADMIN)
+                .antMatchers(HttpMethod.POST, ServicePath.USER_PATH).hasAnyAuthority(AUTH_ADMIN)
+                .antMatchers(HttpMethod.PUT, ServicePath.USER_PATH).hasAnyAuthority(AUTH_ADMIN)
+                .antMatchers(HttpMethod.DELETE, ServicePath.USER_PATH).hasAnyAuthority(AUTH_ADMIN)
         		// Permission Authorities.
-                .antMatchers(HttpMethod.GET, ServicePath.PERMISSION_PATH).permitAll()
+                .antMatchers(HttpMethod.GET, ServicePath.PERMISSION_PATH).hasAnyAuthority(AUTH_ADMIN)
                 // Docente Authorities
                 .antMatchers(HttpMethod.GET, ServicePath.DOCENTE_PATH).permitAll()
-                .antMatchers(HttpMethod.GET, ServicePath.DOCENTE_PATH + "/findAll").permitAll()
-                .antMatchers(HttpMethod.GET, ServicePath.DOCENTE_PATH + ServicePath.ALL).permitAll()
-                .antMatchers(HttpMethod.PUT, ServicePath.DOCENTE_PATH).permitAll()
-                .antMatchers(HttpMethod.DELETE, ServicePath.DOCENTE_PATH).permitAll()
+                .antMatchers(HttpMethod.GET, ServicePath.DOCENTE_PATH + ServicePath.ALL).hasAnyAuthority(AUTH_DOCENTE)
+                .antMatchers(HttpMethod.PUT, ServicePath.DOCENTE_PATH).hasAnyAuthority(AUTH_DOCENTE)
+                .antMatchers(HttpMethod.DELETE, ServicePath.DOCENTE_PATH).hasAnyAuthority(AUTH_DOCENTE)
                 .antMatchers(HttpMethod.POST, ServicePath.DOCENTE_PATH).permitAll()
                 // Discente Authorities
                 .antMatchers(HttpMethod.GET, ServicePath.DISCENTE_PATH).permitAll()
-                .antMatchers(HttpMethod.GET, ServicePath.DISCENTE_PATH + "/findAll").permitAll()
-                .antMatchers(HttpMethod.PUT, ServicePath.DISCENTE_PATH).permitAll()
-                .antMatchers(HttpMethod.DELETE, ServicePath.DISCENTE_PATH).permitAll()
+                .antMatchers(HttpMethod.GET, ServicePath.DISCENTE_PATH + ServicePath.ALL).hasAnyAuthority(AUTH_DISCENTE)
+                .antMatchers(HttpMethod.PUT, ServicePath.DISCENTE_PATH).hasAnyAuthority(AUTH_DISCENTE)
+                .antMatchers(HttpMethod.DELETE, ServicePath.DISCENTE_PATH).hasAnyAuthority(AUTH_DISCENTE)
                 .antMatchers(HttpMethod.POST, ServicePath.DISCENTE_PATH).permitAll()
                 // Curso Authorities
                 .antMatchers(HttpMethod.GET,ServicePath.CURSO_PATH).permitAll()
-                .antMatchers(HttpMethod.GET,ServicePath.CURSO_PATH + ServicePath.ALL).permitAll()
-                .antMatchers(HttpMethod.POST, ServicePath.CURSO_PATH).permitAll()
-                .antMatchers(HttpMethod.PUT, ServicePath.CURSO_PATH).permitAll()
-                .antMatchers(HttpMethod.DELETE, ServicePath.CURSO_PATH).permitAll()
+                .antMatchers(HttpMethod.GET,ServicePath.CURSO_PATH + ServicePath.ALL).hasAnyAuthority( AUTH_ADMIN)
+                .antMatchers(HttpMethod.POST, ServicePath.CURSO_PATH).hasAnyAuthority(AUTH_ADMIN)
+                .antMatchers(HttpMethod.PUT, ServicePath.CURSO_PATH).hasAnyAuthority(AUTH_ADMIN)
+                .antMatchers(HttpMethod.DELETE, ServicePath.CURSO_PATH).hasAnyAuthority(AUTH_ADMIN)
                 // Disciplina Authorities
-                .antMatchers(HttpMethod.GET, ServicePath.DISCIPLINA_PATH).permitAll()
-                .antMatchers(HttpMethod.GET, ServicePath.DISCIPLINA_PATH + ServicePath.ALL).permitAll()
-                .antMatchers(HttpMethod.POST, ServicePath.DISCIPLINA_PATH).permitAll()
-                .antMatchers(HttpMethod.PUT, ServicePath.DISCIPLINA_PATH).permitAll()
-                .antMatchers(HttpMethod.DELETE, ServicePath.DISCIPLINA_PATH).permitAll()
+                .antMatchers(HttpMethod.GET, ServicePath.DISCIPLINA_PATH).hasAnyAuthority(AUTH_ADMIN)
+                .antMatchers(HttpMethod.GET, ServicePath.DISCIPLINA_PATH + ServicePath.ALL).hasAnyAuthority(AUTH_ADMIN)
+                .antMatchers(HttpMethod.POST, ServicePath.DISCIPLINA_PATH).hasAnyAuthority(AUTH_ADMIN)
+                .antMatchers(HttpMethod.PUT, ServicePath.DISCIPLINA_PATH).hasAnyAuthority(AUTH_ADMIN)
+                .antMatchers(HttpMethod.DELETE, ServicePath.DISCIPLINA_PATH).hasAnyAuthority(AUTH_ADMIN)
                 // Reuniao Authorities
-                .antMatchers(HttpMethod.GET, ServicePath.REUNIAO_PATH).permitAll()
-                .antMatchers(HttpMethod.GET, ServicePath.REUNIAO_PATH + ServicePath.ALL).permitAll()
-                .antMatchers(HttpMethod.POST, ServicePath.REUNIAO_PATH).permitAll()
-                .antMatchers(HttpMethod.PUT, ServicePath.REUNIAO_PATH).permitAll()
-                .antMatchers(HttpMethod.DELETE, ServicePath.REUNIAO_PATH).permitAll()
+                .antMatchers(HttpMethod.GET, ServicePath.REUNIAO_PATH).hasAnyAuthority(AUTH_DOCENTE,AUTH_DISCENTE)
+                .antMatchers(HttpMethod.GET, ServicePath.REUNIAO_PATH + ServicePath.ALL).hasAnyAuthority(AUTH_DOCENTE)
+                .antMatchers(HttpMethod.POST, ServicePath.REUNIAO_PATH).hasAnyAuthority(AUTH_DOCENTE,AUTH_DISCENTE)
+                .antMatchers(HttpMethod.PUT, ServicePath.REUNIAO_PATH).hasAnyAuthority(AUTH_DOCENTE,AUTH_DISCENTE)
+                .antMatchers(HttpMethod.DELETE, ServicePath.REUNIAO_PATH).hasAnyAuthority(AUTH_ADMIN)
                 .anyRequest().fullyAuthenticated().and()
                 // Logout configuration.
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher(ServicePath.LOGOUT_PATH)).logoutSuccessHandler(headerHandler).and()
@@ -139,7 +139,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         response.addCookie(cookie);
                     }
                 }
-
                 filterChain.doFilter(request, response);
             }
 

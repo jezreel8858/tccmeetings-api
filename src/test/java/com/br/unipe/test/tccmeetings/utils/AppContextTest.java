@@ -7,7 +7,7 @@ import com.br.unipe.tccmeetings.utils.AppContext;
 
 @Configuration
 @Import(value = { AppContext.class })
-@ComponentScan(basePackages = { "org.wpattern.test.mutrack.simple" })
+@ComponentScan(basePackages = { "com.br.unipe.test.tccmeetings" })
 public abstract class AppContextTest {
 
 }

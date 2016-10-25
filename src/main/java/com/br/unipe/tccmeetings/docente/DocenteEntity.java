@@ -3,6 +3,7 @@ package com.br.unipe.tccmeetings.docente;
 import com.br.unipe.tccmeetings.reuniao.ReuniaoEntity;
 import com.br.unipe.tccmeetings.user.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import com.br.unipe.tccmeetings.discente.DiscenteEntity;
 
@@ -19,14 +20,13 @@ import java.util.List;
 public class DocenteEntity extends UserEntity {
 
     @Null
-    @JsonIgnore
-    @OneToMany(mappedBy = "docente")
+    @JsonView(DocenteEntity.Views.Internal.class)
+    @OneToMany(mappedBy = "docente",fetch = FetchType.LAZY)
     private List<DiscenteEntity> discentes;
 
-    @Null
-    @JsonIgnore
-    @OneToMany(mappedBy = "id_docente")
-    private List<ReuniaoEntity> reunioes;
-
-
+    @Override
+    @JsonView(DocenteEntity.Views.Public.class)
+    public Long getId() {
+        return super.getId();
+    }
 }

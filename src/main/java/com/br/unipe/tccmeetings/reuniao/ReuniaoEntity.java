@@ -1,15 +1,12 @@
 package com.br.unipe.tccmeetings.reuniao;
 
-import com.br.unipe.tccmeetings.discente.DiscenteEntity;
-import com.br.unipe.tccmeetings.docente.DocenteEntity;
 import com.br.unipe.tccmeetings.user.UserEntity;
 import com.br.unipe.tccmeetings.utils.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -22,32 +19,34 @@ import java.util.Date;
 @Data
 public class ReuniaoEntity extends BaseEntity<Long> {
 
-
-    @NotNull
     @Size(max = 150)
-    @Column(name = "descricao", length = 150, nullable = false)
+    @Column(name = "descricao", length = 150)
+    @JsonView(ReuniaoEntity.Views.Public.class)
     private String descricao;
 
-    @NotNull
-    @Column(name = "dataInicial", nullable = false)
+    @Column(name = "dataInicial")
+    @JsonView(ReuniaoEntity.Views.Public.class)
     private Date dataInicial;
 
-    @Null
-    @Column(name = "dataFinal", nullable = true)
+    @Column(name = "dataFinal")
+    @JsonView(ReuniaoEntity.Views.Public.class)
     private Date dataFinal;
 
-    @Null
     @Column(name = "validado")
+    @JsonView(ReuniaoEntity.Views.Public.class)
     private boolean validado;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "id_docente")
-    private DocenteEntity id_docente;
+    @JsonView(ReuniaoEntity.Views.Public.class)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private UserEntity user;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "id_discente")
-    private DiscenteEntity id_discente;
+    public static final class Views {
+        // show only public data
+        public interface Public {
+        }
 
+        // show public and internal data
+        public interface Internal extends Public {
+        }
+    }
 }

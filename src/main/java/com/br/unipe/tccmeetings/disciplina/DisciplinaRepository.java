@@ -1,5 +1,6 @@
 package com.br.unipe.tccmeetings.disciplina;
 
+import com.br.unipe.tccmeetings.docente.DocenteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +17,5 @@ public interface DisciplinaRepository extends JpaRepository<DisciplinaEntity, Lo
 
     @Query("SELECT d FROM DisciplinaEntity d WHERE LOWER(d.nome) LIKE %:content%")
     List<DisciplinaEntity> findByNome(@Param("content") String content);
+
 }

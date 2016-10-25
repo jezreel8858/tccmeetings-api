@@ -1,7 +1,9 @@
 package com.br.unipe.tccmeetings.docente;
 
+import com.br.unipe.tccmeetings.discente.DiscenteEntity;
 import com.br.unipe.tccmeetings.permission.PermissionEntity;
 import com.br.unipe.tccmeetings.permission.PermissionRepository;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,43 +26,28 @@ public class DocenteController extends GenericService<DocenteEntity, Long> {
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
     @Autowired
-    private DocenteRepository docenteRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private PermissionRepository permissionRepository;
+    private DocenteService docenteService;
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
     public DocenteEntity insert(@RequestBody DocenteEntity user) {
-        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-
-        if (this.LOGGER.isDebugEnabled()) {
-            this.LOGGER.debug(String.format("Saving the entity [%s].", user));
-        }
-
-        List<PermissionEntity> permissoes = permissionRepository.findPermissionByDocente();
-        user.setPermissions(permissoes);
-
-        return this.docenteRepository.save(user);
+        return this.docenteService.save(user);
     }
 
     // Get para usuarios Anonymous
-    @RequestMapping(value = "/findAll",method = RequestMethod.GET, produces = "application/json")
-    public List<DocenteEntity> findAllAnonymous() {
-        //        UserEntity user = this.userRepository.findByEmail(currentUser.getActiveUser().getEmail());
-        List<DocenteEntity> list = this.docenteRepository.findAll();
-        for (DocenteEntity docente : list){
-            docente.setPassword(" ");
-            docente.setEmail(" ");
-//            docente.setRemoved(false);
-            docente.setReunioes(null);
-            docente.setPermissions(null);
-        }
+    @Override
+    @JsonView(DocenteEntity.Views.Public.class)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    public List<DocenteEntity> findAll() {
 
-        return list;
+        return this.docenteService.findAll();
+
+    }
+
+    @JsonView(DiscenteEntity.Views.Public.class)
+    @RequestMapping(path = "/discentes", method = RequestMethod.GET, produces = {"application/json"})
+    private List<DiscenteEntity> findMyDiscentes() {
+        return this.docenteService.findDiscentesByDocente();
     }
 
 

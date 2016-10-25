@@ -1,5 +1,6 @@
 package com.br.unipe.tccmeetings.user;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,8 @@ import com.br.unipe.tccmeetings.utils.ServicePath;
 @RestController
 @RequestMapping(path = ServicePath.USER_PATH)
 public class UserController extends GenericService<UserEntity, Long> {
+
+	private final Logger LOGGER = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

@@ -11,7 +11,9 @@ public enum ExceptionConstants {
 
 	SECURITY_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, 5000, "Error thrown by security issues, find an administrator."),
 
-	SERVER_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, 5001, "Server error, find an administrator. [%s]");
+	SERVER_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, 5001, "Server error, find an administrator. [%s]"),
+
+	UNAUTHORIRIZED_EXCEPTION(HttpStatus.UNAUTHORIZED, 401,"Acesso não autorizado.");
 
 	private final HttpStatus httpStatus;
 

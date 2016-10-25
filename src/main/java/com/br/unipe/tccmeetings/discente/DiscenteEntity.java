@@ -2,9 +2,11 @@ package com.br.unipe.tccmeetings.discente;
 
 import com.br.unipe.tccmeetings.curso.CursoEntity;
 import com.br.unipe.tccmeetings.docente.DocenteEntity;
+import com.br.unipe.tccmeetings.permission.PermissionEntity;
 import com.br.unipe.tccmeetings.reuniao.ReuniaoEntity;
 import com.br.unipe.tccmeetings.user.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,16 +25,36 @@ public class DiscenteEntity extends UserEntity {
 
     @NotNull
     @OneToOne
+    @JsonView(DiscenteEntity.Views.Internal.class)
     private CursoEntity curso;
 
-    @Null
-    @JsonIgnore
-    @OneToMany(mappedBy = "id_discente")
-    private List<ReuniaoEntity> reunioes;
-
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "id_docente")
+    @JsonView(DocenteEntity.Views.Internal.class)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "docente")
     private DocenteEntity docente;
 
+    @Override
+    @JsonView(DiscenteEntity.Views.Internal.class)
+    public String getEmail() {
+        return super.getEmail();
+    }
+
+    @Override
+    @JsonView(DiscenteEntity.Views.Internal.class)
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @Override
+    @JsonView(DiscenteEntity.Views.Internal.class)
+    public List<PermissionEntity> getPermissions() {
+        return super.getPermissions();
+    }
+
+    @Override
+    @JsonView(DiscenteEntity.Views.Public.class)
+    public Long getId() {
+        return super.getId();
+    }
 }

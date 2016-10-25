@@ -17,7 +17,6 @@ import javax.validation.constraints.NotNull;
 public class DisciplinaEntity extends BaseEntity<Long>{
 
     @NotNull
-    @NotEmpty
     @Column(name = "nome",length = 50,nullable = false,unique = true)
     private String nome;
 

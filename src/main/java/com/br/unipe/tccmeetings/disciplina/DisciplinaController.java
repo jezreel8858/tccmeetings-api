@@ -35,7 +35,7 @@ public class DisciplinaController extends GenericService<DisciplinaEntity,Long> 
 
     @RequestMapping(value = "/filter/{column}/{content}",method = RequestMethod.GET, produces = "application/json")
     public List<DisciplinaEntity> findByFilter(@PathVariable("column") String column, @PathVariable("content") String content) {
-        UserEntity user = this.userRepository.findByEmail(currentUser.getActiveUser().getEmail());
+       // UserEntity user = this.userRepository.findByEmail(currentUser.getActiveUser().getEmail());
         List<DisciplinaEntity> list = null;
             if(column.toLowerCase().equals("nome")){
             list = this.disciplinaRepository.findByNome(content.toLowerCase());
