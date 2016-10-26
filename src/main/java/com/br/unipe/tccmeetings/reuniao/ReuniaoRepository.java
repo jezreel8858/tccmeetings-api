@@ -15,8 +15,7 @@ public interface ReuniaoRepository extends JpaRepository<ReuniaoEntity,Long> {
 
 
 
-    List<ReuniaoEntity> findByUserId(@Param("id") Long id);
+//    List<ReuniaoEntity> find
 
-    List<ReuniaoEntity> findAllByUserId(@Param("id") Long id);
 
 }

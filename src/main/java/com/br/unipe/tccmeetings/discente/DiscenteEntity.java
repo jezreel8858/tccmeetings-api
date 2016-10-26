@@ -31,7 +31,7 @@ public class DiscenteEntity extends UserEntity {
     @NotNull
     @JsonView(DocenteEntity.Views.Internal.class)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "docente")
+    @JoinColumn(name = "docente_id",referencedColumnName = "pk_id")
     private DocenteEntity docente;
 
     @Override

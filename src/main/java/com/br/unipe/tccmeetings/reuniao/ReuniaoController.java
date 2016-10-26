@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by jezreel on 11/10/16.
@@ -28,21 +27,59 @@ public class ReuniaoController extends GenericService<ReuniaoEntity,Long> {
 
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
-    @Autowired  private  ReuniaoService reuniaoService;
+    @Autowired
+    private CurrentUser currentUser;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private DiscenteRepository discenteRepository;
+
+    @Autowired
+    private DocenteRepository docenteRepository;
 
     @Override
     @JsonView(ReuniaoEntity.Views.Public.class)
     public ReuniaoEntity insert(@RequestBody ReuniaoEntity reuniao) {
-        return reuniaoService.insert(reuniao);
+
+        UserEntity user = this.userRepository.findByEmail(currentUser.getActiveUser().getEmail());
+
+        if (user instanceof DocenteEntity) {
+            reuniao.setValidado(true);
+            reuniao = genericRepository.save(reuniao);
+            user.getReunioes().add(reuniao);
+            this.userRepository.save(user);
+
+        } else if(user instanceof DiscenteEntity){
+            reuniao.setValidado(false);
+            reuniao.setDiscente(null);
+            reuniao = genericRepository.save(reuniao);
+            user.getReunioes().add(reuniao);
+            this.discenteRepository.save((DiscenteEntity) user);
+        }
+        return null;
     }
 
     @Override
-    @JsonView(ReuniaoEntity.Views.Public.class)
+    @JsonView(ReuniaoEntity.Views.Docente.class)
     public List<ReuniaoEntity> findAll() {
-        return this.reuniaoService.findAll();
+        UserEntity user = this.userRepository.findByEmail(currentUser.getActiveUser().getEmail());
+
+        if (user != null) {
+            if (user instanceof DocenteEntity) {
+                return user.getReunioes();
+            } else if (user instanceof DiscenteEntity) {
+                return user.getReunioes();
+            }
+        }
+        return null;
     }
 
+    @RequestMapping(path = "findMyAllDiscentes")
+    @JsonView(DiscenteEntity.Views.Internal.class)
     public List<DiscenteEntity> findAllDiscenteReunioes(){
-        return this.reuniaoService.findAllDiscentesReunioes();
+        UserEntity user = this.userRepository.findByEmail(currentUser.getActiveUser().getEmail());
+        return this.docenteRepository.findAllMyDiscentes(user.getId());
     }
 }

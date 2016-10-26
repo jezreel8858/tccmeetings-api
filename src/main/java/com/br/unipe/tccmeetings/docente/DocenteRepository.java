@@ -15,13 +15,11 @@ public interface DocenteRepository extends JpaRepository<DocenteEntity,Long> {
     @Query("SELECT d FROM DocenteEntity d WHERE LOWER(d.name) LIKE %:content%")
     List<DocenteEntity> findByNome(@Param("content") String content);
 
+    @Query("SELECT di FROM DiscenteEntity di INNER JOIN di.docente do WHERE do.id = :id")
+    List<DiscenteEntity> findAllMyDiscentes(@Param("id")Long id);
+
     DocenteEntity findById(Long id);
 
     DocenteEntity findByEmail(String email);
 
-    @Query("SELECT di FROM DocenteEntity do INNER JOIN do.discentes di WHERE do.id = :id")
-    List<DiscenteEntity> findAllDiscentes(@Param("id")Long id);
-
-    @Query("SELECT di,r FROM DocenteEntity do INNER JOIN do.reunioes r INNER JOIN do.discentes di WHERE do.id = :id")
-    List<DiscenteEntity> findAllDiscentesReunioes(@Param("id")Long id);
 }

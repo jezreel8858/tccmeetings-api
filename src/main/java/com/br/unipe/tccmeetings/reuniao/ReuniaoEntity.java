@@ -1,5 +1,7 @@
 package com.br.unipe.tccmeetings.reuniao;
 
+import com.br.unipe.tccmeetings.discente.DiscenteEntity;
+import com.br.unipe.tccmeetings.docente.DocenteEntity;
 import com.br.unipe.tccmeetings.user.UserEntity;
 import com.br.unipe.tccmeetings.utils.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -36,17 +38,27 @@ public class ReuniaoEntity extends BaseEntity<Long> {
     @JsonView(ReuniaoEntity.Views.Public.class)
     private boolean validado;
 
-    @JsonView(ReuniaoEntity.Views.Public.class)
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private UserEntity user;
+    @Column(name = "discente")
+    @JsonView(ReuniaoEntity.Views.Docente.class)
+    private Long discente;
+
 
     public static final class Views {
         // show only public data
         public interface Public {
         }
 
+        public interface Docente extends Public{
+
+        }
+
         // show public and internal data
         public interface Internal extends Public {
         }
+    }
+    @JsonView(ReuniaoEntity.Views.Docente.class)
+    @Override
+    public Long getId() {
+        return super.getId();
     }
 }

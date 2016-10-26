@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created by jezreel on 13/10/16.
  */
@@ -18,6 +20,16 @@ public class CursoController extends GenericService<CursoEntity,Long> {
 
     @Autowired
     private CursoRepository cursoRepository;
+
+    public List<CursoEntity> findAll() {
+        return this.cursoRepository.findAll();
+    }
+
+    public CursoEntity findById(Long id){ return  this.cursoRepository.findById(id);}
+
+    public CursoEntity insert(CursoEntity curso) {
+        return this.cursoRepository.save(curso);
+    }
 
 
 }

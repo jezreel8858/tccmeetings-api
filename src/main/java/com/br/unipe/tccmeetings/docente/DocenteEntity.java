@@ -19,14 +19,11 @@ import java.util.List;
 @Data
 public class DocenteEntity extends UserEntity {
 
-    @Null
-    @JsonView(DocenteEntity.Views.Internal.class)
-    @OneToMany(mappedBy = "docente",fetch = FetchType.LAZY)
-    private List<DiscenteEntity> discentes;
 
     @Override
     @JsonView(DocenteEntity.Views.Public.class)
     public Long getId() {
         return super.getId();
     }
+
 }

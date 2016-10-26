@@ -53,8 +53,9 @@ public class UserEntity extends BaseEntity<Long> {
 	private List<PermissionEntity> permissions;
 
 	@Null
-	@JsonView(UserEntity.Views.Internal.class)
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonView(UserEntity.Views.Public.class)
+	@OneToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+	@JoinTable(name="tb_user_reuniao", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "reuniao_id"))
 	private List<ReuniaoEntity> reunioes;
 
 	public UserEntity() {
